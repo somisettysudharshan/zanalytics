@@ -1,0 +1,21 @@
+<mvc:View controllerName="ux.zanalytics.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns:core="sap.ui.core"    
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <Button
+	        	text="Open Action Sheet"
+	        	class="sapUiSmallMargin"
+	        	press=".onButtonPress"
+	        	ariaHasPopup="Menu" >
+	        	<dependents>
+	        		<core:Fragment
+	        			fragmentName="sap.m.sample.ActionSheet.view.ActionSheet"
+	        			type="XML" />
+	        	</dependents>
+	        </Button>        
+        </content>
+
+    </Page>
+</mvc:View>
