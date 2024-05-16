@@ -1,21 +1,265 @@
-<mvc:View controllerName="ux.zanalytics.controller.View1"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-	xmlns:core="sap.ui.core"    
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-        <content>
-            <Button
-	        	text="Open Action Sheet"
-	        	class="sapUiSmallMargin"
-	        	press=".onButtonPress"
-	        	ariaHasPopup="Menu" >
-	        	<dependents>
-	        		<core:Fragment
-	        			fragmentName="sap.m.sample.ActionSheet.view.ActionSheet"
-	        			type="XML" />
-	        	</dependents>
-	        </Button>        
-        </content>
+<mvc:View
+    controllerName="ux.zanalytics.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:micro="sap.suite.ui.microchart"
+    xmlns:tnt="sap.tnt"
+>
+    <Page
+        id="page"
+        title="{i18n>title}"
+        class="sapUiResponsiveContentPadding"
+    >
+        <content >
+            <VBox>
+                <Text text="page" />
+                <VBox>
+                    <Text text="section1" />
+                </VBox>
+                <HBox>
+                    <Image
+                        class="sapUiTinyMargin sapUiLargeMarginTop"
+                        src="../images/cropped-ParayilGroupIcoLogo150-1.jpg"
+                        width="8em"
+                        height="5em"
+                    />
 
+                    <HBox>
+                        <GenericTile
+                            class="sapUiTinyMargin sapUiLargeMarginTop"
+                            header="Total Amount - KPI"
+                            frameType="OneByHalf"
+                            subheader="Expenses"
+                            press="onPress"
+                        >
+                            <TileContent
+                                unit="EUR"
+                                footer="Current Quarter"
+                            >
+                                <NumericContent
+                                    scale="USD"
+                                    value="12000"
+                                    valueColor="Good"
+                                    indicator="Up"
+                                    withMargin="false"
+                                />
+                            </TileContent>
+                        </GenericTile>
+
+                        <FlexBox
+                            class="sapUiTinyMargin sapUiLargeMarginTop"
+                            height="100px"
+                            width="170px"
+                            renderType="Bare"
+                        >
+                            <micro:ComparisonMicroChart
+                                scale="M"
+                                press="press"
+                                size="Responsive"
+                            >
+                                <micro:data>
+                                    <micro:ComparisonMicroChartData
+                                        title="Americas"
+                                        value="10"
+                                        color="Good"
+                                    />
+                                    <micro:ComparisonMicroChartData
+                                        title="EMEA"
+                                        value="50"
+                                        color="Good"
+                                    />
+                                    <micro:ComparisonMicroChartData
+                                        title="APAC"
+                                        value="-20"
+                                        color="Error"
+                                    />
+                                </micro:data>
+                            </micro:ComparisonMicroChart>
+                        </FlexBox>
+                        <FlexBox
+                            class="sapUiTinyMargin sapUiLargeMarginTop"
+                            height="70px"
+                            width="170px"
+                            renderType="Bare"
+                        >
+                            <micro:HarveyBallMicroChart
+                                size="Responsive"
+                                total="100"
+                                totalScale="Mrd"
+                                showTotal="true"
+                                showFractions="true"
+                                press="press"
+                            >
+                                <micro:items>
+                                    <micro:HarveyBallMicroChartItem
+                                        fraction="63.5"
+                                        color="Good"
+                                        fractionScale="Mrd"
+                                    />
+                                </micro:items>
+                            </micro:HarveyBallMicroChart>
+                        </FlexBox>
+                        <FlexBox
+                            class="sapUiTinyMargin sapUiLargeMarginTop"
+                            height="70px"
+                            width="170px"
+                            renderType="Bare"
+                        >
+                            <micro:LineMicroChart
+                                threshold="35"
+                                size="Responsive"
+                                press="press"
+                                leftTopLabel="0M"
+                                leftBottomLabel=" Q1 start"
+                                rightTopLabel="70M"
+                                rightBottomLabel="Q1 End"
+                            >
+                                <micro:lines>
+                                    <micro:LineMicroChartLine>
+                                        <micro:points>
+                                            <micro:LineMicroChartEmphasizedPoint
+                                                x="0"
+                                                y="35"
+                                                color="Error"
+                                                show="true"
+                                            />
+                                            <micro:LineMicroChartEmphasizedPoint
+                                                x="8"
+                                                y="53"
+                                            />
+                                            <micro:LineMicroChartEmphasizedPoint
+                                                x="20"
+                                                y="10"
+                                            />
+                                            <micro:LineMicroChartEmphasizedPoint
+                                                x="30"
+                                                y="30"
+                                            />
+                                            <micro:LineMicroChartEmphasizedPoint
+                                                x="40"
+                                                y="52"
+                                            />
+                                            <micro:LineMicroChartEmphasizedPoint
+                                                x="100"
+                                                y="73"
+                                                color="Good"
+                                                show="true"
+                                            />
+                                        </micro:points>
+                                    </micro:LineMicroChartLine>
+                                </micro:lines>
+                            </micro:LineMicroChart>
+                        </FlexBox>
+                        <GenericTile
+                            class="sapUiTinyMargin sapUiLargeMarginTop"
+                            backgroundImage="../images//cash-flow-economy-finance-investment-money-concept_53876-160129.avif"
+                            frameType="OneByOne"
+                            press="onPress"
+                        >
+                            <TileContent
+                                footer="58,900"
+                                frameType="OneByOne"
+                            >
+                                <NewsContent
+                                    contentText="Realtime Business Cash Flow "
+                                    subheader="   per day"
+                                />
+                            </TileContent>
+                        </GenericTile>
+                    </HBox>
+                </HBox>
+
+                <VBox>
+
+                </VBox>
+                <HBox>
+                    <IconTabBar class="sapUiResponsiveContentPadding">
+                        <items>
+                            <IconTabFilter
+                                key="info"
+                                text="Dashboard"
+                                icon="sap-icon://database"
+                                count="7"
+                                iconColor="Negative"
+                                design="Horizontal"
+                            >
+                                <items>
+                                <!--tab 1-->
+                                    <IconTabFilter icon="sap-icon://error" count="3" text="Application Errors">
+                                        <Text
+                                            text="Application Errors content goes here..."
+                                        />
+                                        <!-- Update no.of app error count -->
+                                    </IconTabFilter>
+                                    <IconTabFilter icon="sap-icon://high-priority" count="5" text="System Errors">
+                                        <Text
+                                            text="System Errors content goes here..."
+                                        />
+                                    </IconTabFilter>
+                                </items>
+                            </IconTabFilter>
+                            <IconTabSeparator icon="sap-icon://process"/>
+                            <!--2nd icon tab-->
+                            <IconTabFilter
+                                key="info"
+                                text="Charts"
+                                icon="sap-icon://business-objects-experience"
+                                design="Horizontal"
+                                iconColor="Contrast"
+                                
+                            >
+                                <items>
+                                    <IconTabFilter text="Micro Charts">
+                                        <Text
+                                            text="Micro Charts will shown hear"
+                                        />
+                                    </IconTabFilter>
+                                    <IconTabFilter text="Viz Charts">
+                                        <Text
+                                            text="Bar Charts,Line Charts..etc"
+                                        />
+                                    </IconTabFilter>
+                                    <IconTabFilter text="Pie Charts">
+                                        <Text text="Pie,Donut charts..." />
+                                    </IconTabFilter>
+                                </items>
+                            </IconTabFilter>
+                            <IconTabSeparator icon="sap-icon://process"/>
+                                <!--Tab 3-->
+                             <IconTabFilter
+                                key="info"
+                                text="Tabular Reports"
+                                icon="sap-icon://chart-table-view"
+                                design="Horizontal"
+                                iconColor="Marker"
+                            >
+                                <items>
+                                    <IconTabFilter text="Responsive Table -M">
+                                        <Text
+                                            text="Table -M will shown hear"
+                                        />
+                                    </IconTabFilter>
+                                    <IconTabFilter text="Grid Table UI-Table">
+                                        <Text
+                                            text="Grid - Excel like table control options"
+                                        />
+                                    </IconTabFilter>
+                                    <IconTabFilter text="Tree Table - UI Table">
+                                        <Text text=" Tree table control options" />
+                                    </IconTabFilter>
+                                </items>
+                            </IconTabFilter>
+                            <IconTabSeparator icon="sap-icon://vertical-grip"></IconTabSeparator>
+                        </items>
+                    </IconTabBar>
+                </HBox>
+
+                <HBox>
+                    <Text text="section3" />
+                </HBox>
+            </VBox>
+        </content>
     </Page>
 </mvc:View>
