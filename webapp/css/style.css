@@ -1,1 +1,60 @@
 /* Enter your custom styles here */
+
+.Tile1 {
+    border: 4px groove 
+    
+    ;
+    border-radius: 35px;
+    padding: 35px;
+  }
+  .equalColumns1 {
+    background-color: #FDE8E9;
+    
+  }  
+   .equalColumns2 {
+    background-color: #E3BAC6;
+    
+  } 
+   .equalColumns3 {
+    background-color: #BC9EC1;
+    
+  } 
+   .equalColumns4 {
+    background-color: #596475;
+    
+  } 
+   .equalColumns5 {
+    background-color: #1F2232;
+    
+  } 
+  
+  .HeaderTile1 {
+     background-color: #003049;  
+    border-radius: 5px;
+  } 
+  .HeaderTileText1{
+     color: #FFFFFF;
+  }
+  .HeaderTileStatusText1{
+    color: #EAE2B7;
+  }
+  .SimpleFormTitle1{
+    color: #FFFFFF;
+  }
+  .AlertText{
+    color: #FF0000;
+  }
+  .IconTabText{
+    color: #000000;
+  }
+  .FormTitleBackground{
+    background-color: #003049;
+  }
+  .Hbold {
+    font-weight: bold;
+  }
+  .HeaderTile2 {
+    background-color: #49adc1;
+    
+  } 
+   /* Enter your custom styles here */

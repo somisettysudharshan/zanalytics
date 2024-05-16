@@ -6,13 +6,18 @@
     xmlns="sap.m"
     xmlns:micro="sap.suite.ui.microchart"
     xmlns:tnt="sap.tnt"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:chart="sap.suite.ui.commons"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
 >
     <Page
         id="page"
         title="{i18n>title}"
         class="sapUiResponsiveContentPadding"
     >
-        <content >
+        <content>
             <VBox>
                 <Text text="page" />
                 <VBox>
@@ -171,9 +176,7 @@
                     </HBox>
                 </HBox>
 
-                <VBox>
-
-                </VBox>
+                <VBox />
                 <HBox>
                     <IconTabBar class="sapUiResponsiveContentPadding">
                         <items>
@@ -186,21 +189,635 @@
                                 design="Horizontal"
                             >
                                 <items>
-                                <!--tab 1-->
-                                    <IconTabFilter icon="sap-icon://error" count="3" text="Application Errors">
+                                    <!--tab 1-->
+                                    <IconTabFilter
+                                        icon="sap-icon://error"
+                                        count="3"
+                                        text="Application Errors"
+                                    >
                                         <Text
                                             text="Application Errors content goes here..."
                                         />
                                         <!-- Update no.of app error count -->
                                     </IconTabFilter>
-                                    <IconTabFilter icon="sap-icon://high-priority" count="5" text="System Errors">
-                                        <Text
-                                            text="System Errors content goes here..."
-                                        />
-                                    </IconTabFilter>
+                                    <IconTabFilter
+                                        icon="sap-icon://high-priority"
+                                        count="5"
+                                        text="System Errors"
+                                    />
                                 </items>
+
+                                <VBox id="TileContainer">
+                                    <!-- Tile Container -->
+
+                                    <HBox id="Row1">
+                                        <!-- Row 1 -->
+                                        <!-- Tile 1*1 -->
+
+                                        <f:SimpleForm
+                                            id="IDtile"
+                                            class="equalColumns1 sapUiLargeMarginEnd"
+                                            maxContainerCols="1"
+                                            title="SAP"
+                                            editable="false"
+                                            layout="ResponsiveLayout"
+                                        >
+                                            <VBox id="IDcontainer">
+                                                <HBox>
+                                                    <Text
+                                                        class="sapUiMediumMarginTop sapUiSmallMarginBegin"
+                                                        text="Queue Depth"
+                                                    />
+                                                    <NumericContent
+                                                        id="IDNum"
+                                                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                                                        value="{oSAPModel>/d/ItemCount}"
+                                                        valueColor="Critical"
+                                                        indicator="None"
+                                                        withMargin="false"
+                                                        state="Loaded"
+                                                        press="onOpenQueueDialog"
+                                                    />
+                                                </HBox>
+
+                                                <List
+                                                    id="IDlist"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <StandardListItem
+                                                        id="IDsys"
+                                                        title="System Errors"
+                                                        type="Active"
+                                                        press="onOpenSystemDialog"
+                                                        info="{
+								                                                    path: 'oSAPModel>/d/OrderedById',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        id="IDapp"
+                                                        title="App Errors"
+                                                        type="Active"
+                                                        press="onOpenAppDialog"
+                                                        info=" {
+								                                                    path: 'oSAPModel>/d/SupplierId',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        title="No of Threads"
+                                                        info="{oSAPModel>/d/ItemCount}"
+                                                        infoState="None"
+                                                    />
+                                                </List>
+
+                                                <HBox>
+                                                    <Label
+                                                        class="sapUiTinyMarginBegin"
+                                                        text="last refresh:"
+                                                    />
+                                                    <Text
+                                                        text="{
+								                                                    path: 'oSAPModel>/d/DeliveryDateEarliest',
+							                                                    formatter: '.Formatter.formatJSONDate'}"
+                                                    />
+                                                </HBox>
+                                            </VBox>
+                                        </f:SimpleForm>
+                                        <!-- Tile 1*2  -->
+
+                                        <f:SimpleForm
+                                            id="Contile"
+                                            class="equalColumns1 sapUiLargeMarginEnd"
+                                            maxContainerCols="1"
+                                            title="Concur"
+                                            editable="false"
+                                            layout="ResponsiveLayout"
+                                        >
+                                            <VBox id="Concontainer">
+                                                <HBox>
+                                                    <Text
+                                                        class="sapUiMediumMarginTop sapUiSmallMarginBegin"
+                                                        text="Queue Depth"
+                                                    />
+                                                    <NumericContent
+                                                        id="ConNum"
+                                                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                                                        value="{oConModel>/d/ItemCount}"
+                                                        valueColor="Critical"
+                                                        indicator="None"
+                                                        withMargin="false"
+                                                        state="Loaded"
+                                                        press="onOpenQueueDialog"
+                                                    />
+                                                </HBox>
+
+                                                <List
+                                                    id="Conlist"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <StandardListItem
+                                                        id="Consys"
+                                                        title="System Errors"
+                                                        type="Active"
+                                                        press="onOpenSystemDialog"
+                                                        info="{
+								                                                    path: 'oConModel>/d/OrderedById',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        id="Conapp"
+                                                        title="App Errors"
+                                                        type="Active"
+                                                        press="onOpenAppDialog"
+                                                        info="{
+								                                                    path: 'oConModel>/d/SupplierId',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        title="No of Threads"
+                                                        info="{oConModel>/d/ItemCount}"
+                                                        infoState="None"
+                                                    />
+                                                </List>
+
+                                                <HBox>
+                                                    <Label
+                                                        class="sapUiTinyMarginBegin"
+                                                        text=" last refresh :"
+                                                    />
+                                                    <Text
+                                                        text="{
+								                                                    path: 'oConModel>/d/DeliveryDateEarliest',
+							                                                    formatter: '.Formatter.formatJSONDate'}"
+                                                    />
+                                                </HBox>
+                                            </VBox>
+                                        </f:SimpleForm>
+
+                                        <!-- Tile 1*3 -->
+
+                                        <f:SimpleForm
+                                            id="Aribatile"
+                                            class="equalColumns1 sapUiLargeMarginEnd"
+                                            maxContainerCols="1"
+                                            title="Ariba"
+                                            editable="false"
+                                            layout="ResponsiveLayout"
+                                        >
+                                            <VBox id="Aribacontainer">
+                                                <HBox>
+                                                    <Text
+                                                        class="sapUiMediumMarginTop sapUiSmallMarginBegin"
+                                                        text="Queue Depth"
+                                                    />
+                                                    <NumericContent
+                                                        id="AribaNum"
+                                                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                                                        value="{oAriModel>/d/ItemCount}"
+                                                        valueColor="Critical"
+                                                        indicator="None"
+                                                        withMargin="false"
+                                                        state="Loaded"
+                                                        press="onOpenQueueDialog"
+                                                    />
+                                                </HBox>
+
+                                                <List
+                                                    id="Aribalist"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <StandardListItem
+                                                        id="Aribasys"
+                                                        title="System Errors"
+                                                        type="Active"
+                                                        press="onOpenSystemDialog"
+                                                        info="{
+								                                                    path: 'oAriModel>/d/OrderedById',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        id="Aribaapp"
+                                                        title="App Errors"
+                                                        type="Active"
+                                                        press="onOpenAppDialog"
+                                                        info=" {
+								                                                    path: 'oAriModel>/d/SupplierId',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        title="No of Threads"
+                                                        info="{oAriModel>/d/ItemCount}"
+                                                        infoState="None"
+                                                    />
+                                                </List>
+
+                                                <HBox>
+                                                    <Label
+                                                        class="sapUiTinyMarginBegin"
+                                                        text="last refresh:"
+                                                    />
+                                                    <Text
+                                                        text="{
+								                                                    path: 'oAriModel>/d/DeliveryDateEarliest',
+							                                                    formatter: '.Formatter.formatJSONDate'}"
+                                                    />
+                                                </HBox>
+                                            </VBox>
+                                        </f:SimpleForm>
+
+                                        <!-- 1*4 -->
+
+                                        <f:SimpleForm
+                                            id="FGtile"
+                                            class="equalColumns1 sapUiLargeMarginEnd"
+                                            maxContainerCols="1"
+                                            title="FieldGlass"
+                                            editable="false"
+                                            layout="ResponsiveLayout"
+                                        >
+                                            <VBox id="FGcontainer">
+                                                <HBox>
+                                                    <Text
+                                                        class="sapUiMediumMarginTop sapUiSmallMarginBegin"
+                                                        text="Queue Depth"
+                                                    />
+                                                    <NumericContent
+                                                        id="FGNum"
+                                                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                                                        value="{oFGModel>/d/ItemCount}"
+                                                        valueColor="Critical"
+                                                        indicator="None"
+                                                        withMargin="false"
+                                                        state="Loaded"
+                                                        press="onOpenQueueDialog"
+                                                    />
+                                                </HBox>
+
+                                                <List
+                                                    id="FGlist"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <StandardListItem
+                                                        id="FGsys"
+                                                        title="System Errors"
+                                                        type="Active"
+                                                        press="onOpenSystemDialog"
+                                                        info="{
+								                                                    path: 'oFGModel>/d/OrderedById',
+							                                                    formatter: '.Formatter.formatInputValue'} "
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        id="FGapp"
+                                                        title="App Errors"
+                                                        type="Active"
+                                                        press="onOpenAppDialog"
+                                                        info="{
+								                                                    path: 'oFGModel>/d/SupplierId',
+							                                                    formatter: '.Formatter.formatInputValue'}  "
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        title="No of Threads"
+                                                        info="{oFGModel>/d/ItemCount}"
+                                                        infoState="None"
+                                                    />
+                                                </List>
+
+                                                <HBox>
+                                                    <Label
+                                                        class="sapUiTinyMarginBegin"
+                                                        text="last refresh:"
+                                                    />
+                                                    <Text
+                                                        text="{
+								                                                    path: 'oFGModel>/d/DeliveryDateEarliest',
+							                                                    formatter: '.Formatter.formatJSONDate'}"
+                                                    />
+                                                </HBox>
+                                            </VBox>
+                                        </f:SimpleForm>
+                                    </HBox>
+
+                                    <HBox id="Row2">
+                                        <!-- Row2 -->
+
+                                        <!-- Tile 2*1 -->
+
+                                        <f:SimpleForm
+                                            id="ECCtile"
+                                            class="equalColumns1 sapUiLargeMarginEnd"
+                                            maxContainerCols="1"
+                                            title="ECC"
+                                            editable="false"
+                                            layout="ResponsiveLayout"
+                                        >
+                                            <VBox id="ECCcontainer">
+                                                <HBox>
+                                                    <Text
+                                                        class="sapUiMediumMarginTop sapUiSmallMarginBegin"
+                                                        text="Queue Depth"
+                                                    />
+                                                    <NumericContent
+                                                        id="ECCNum"
+                                                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                                                        value="{oECCModel>/d/ItemCount}"
+                                                        valueColor="Critical"
+                                                        indicator="None"
+                                                        withMargin="false"
+                                                        state="Loaded"
+                                                        press="onOpenQueueDialog"
+                                                    />
+                                                </HBox>
+
+                                                <List
+                                                    id="ECClist"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <StandardListItem
+                                                        id="ECCsys"
+                                                        title="System Errors"
+                                                        type="Active"
+                                                        press="onOpenSystemDialog"
+                                                        info="{
+								                                                    path: 'oECCModel>/d/OrderedById',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        id="ECCapp"
+                                                        title="App Errors"
+                                                        type="Active"
+                                                        press="onOpenAppDialog"
+                                                        info=" {
+								                                                    path: 'oECCModel>/d/SupplierId',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        title="No of Threads"
+                                                        info="{oECCModel>/d/ItemCount}"
+                                                        infoState="None"
+                                                    />
+                                                </List>
+
+                                                <HBox>
+                                                    <Label
+                                                        class="sapUiTinyMarginBegin"
+                                                        text="last refresh:"
+                                                    />
+                                                    <Text
+                                                        text="{
+								                                                    path: 'oECCModel>/d/DeliveryDateEarliest',
+							                                                    formatter: '.Formatter.formatJSONDate'}"
+                                                    />
+                                                </HBox>
+                                            </VBox>
+                                        </f:SimpleForm>
+
+                                        <!-- Tile 2*2  -->
+
+                                        <f:SimpleForm
+                                            id="Javatile"
+                                            class="equalColumns1 sapUiLargeMarginEnd"
+                                            maxContainerCols="1"
+                                            title="JAVA"
+                                            editable="false"
+                                            layout="ResponsiveLayout"
+                                        >
+                                            <VBox id="Javcontainer">
+                                                <HBox>
+                                                    <Text
+                                                        class="sapUiMediumMarginTop sapUiSmallMarginBegin"
+                                                        text="Queue Depth"
+                                                    />
+                                                    <NumericContent
+                                                        id="JavNum"
+                                                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                                                        value="{oJavaModel>/d/ItemCount}"
+                                                        valueColor="Critical"
+                                                        indicator="None"
+                                                        withMargin="false"
+                                                        state="Loaded"
+                                                        press="onOpenQueueDialog"
+                                                    />
+                                                </HBox>
+
+                                                <List
+                                                    id="Javlist"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <StandardListItem
+                                                        id="Javsys"
+                                                        title="System Errors"
+                                                        type="Active"
+                                                        press="onOpenSystemDialog"
+                                                        info=" {
+								                                                    path: 'oJavaModel>/d/OrderedById',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        id="Javapp"
+                                                        title="App Errors"
+                                                        type="Active"
+                                                        press="onOpenAppDialog"
+                                                        info="{
+								                                                    path: 'oJavaModel>/d/SupplierId',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        title="No of Threads"
+                                                        info="{oJavaModel>/d/ItemCount}"
+                                                        infoState="None"
+                                                    />
+                                                </List>
+
+                                                <HBox>
+                                                    <Label
+                                                        class="sapUiTinyMarginBegin"
+                                                        text="last refresh:"
+                                                    />
+                                                    <Text
+                                                        text="{
+								                                                    path: 'oJavaModel>/d/DeliveryDateEarliest',
+							                                                    formatter: '.Formatter.formatJSONDate'}"
+                                                    />
+                                                </HBox>
+                                            </VBox>
+                                        </f:SimpleForm>
+
+                                        <!-- Tile 2*3 -->
+
+                                        <f:SimpleForm
+                                            id="SFtile"
+                                            class="equalColumns1 sapUiLargeMarginEnd"
+                                            maxContainerCols="1"
+                                            title="SalesForce"
+                                            editable="false"
+                                            layout="ResponsiveLayout"
+                                        >
+                                            <VBox id="SFcontainer">
+                                                <HBox>
+                                                    <Text
+                                                        class="sapUiMediumMarginTop sapUiSmallMarginBegin"
+                                                        text="Queue Depth"
+                                                    />
+                                                    <NumericContent
+                                                        id="SFNum"
+                                                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                                                        value="{oSFModel>/d/ItemCount}"
+                                                        valueColor="Critical"
+                                                        indicator="None"
+                                                        withMargin="false"
+                                                        state="Loaded"
+                                                        press="onOpenQueueDialog"
+                                                    />
+                                                </HBox>
+
+                                                <List
+                                                    id="SFlist"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <StandardListItem
+                                                        id="SFsys"
+                                                        title="System Errors"
+                                                        type="Active"
+                                                        press="onOpenSystemDialog"
+                                                        info="{
+								                                                    path: 'oSFModel>/d/OrderedById',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        id="SFapp"
+                                                        title="App Errors"
+                                                        type="Active"
+                                                        press="onOpenAppDialog"
+                                                        info=" {
+								                                                    path: 'oSFModel>/d/SupplierId',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        title="No of Threads"
+                                                        info="{oSFModel>/d/ItemCount}"
+                                                        infoState="None"
+                                                    />
+                                                </List>
+
+                                                <HBox>
+                                                    <Label
+                                                        class="sapUiTinyMarginBegin"
+                                                        text="last refresh:"
+                                                    />
+                                                    <Text
+                                                        text="{
+								                                                    path: 'oSFModel>/d/DeliveryDateEarliest',
+							                                                    formatter: '.Formatter.formatJSONDate'}"
+                                                    />
+                                                </HBox>
+                                            </VBox>
+                                        </f:SimpleForm>
+
+                                        <!-- 2*4 -->
+
+                                        <f:SimpleForm
+                                            id="Aztile"
+                                            class="equalColumns1 sapUiLargeMarginEnd"
+                                            maxContainerCols="1"
+                                            title="Azure"
+                                            editable="false"
+                                            layout="ResponsiveLayout"
+                                        >
+                                            <VBox id="Azcontainer">
+                                                <HBox>
+                                                    <Text
+                                                        class="sapUiMediumMarginTop sapUiSmallMarginBegin"
+                                                        text="Queue Depth"
+                                                    />
+                                                    <NumericContent
+                                                        id="AzNum"
+                                                        class="sapUiSmallMarginBegin sapUiTinyMarginTop"
+                                                        value="{oAZModel>/d/ItemCount}"
+                                                        valueColor="Critical"
+                                                        indicator="None"
+                                                        withMargin="false"
+                                                        state="Loaded"
+                                                        press="onOpenQueueDialog"
+                                                    />
+                                                </HBox>
+
+                                                <List
+                                                    id="Azlist"
+                                                    class="sapUiTinyMarginBottom"
+                                                >
+                                                    <StandardListItem
+                                                        id="Azsys"
+                                                        title="System Errors"
+                                                        type="Active"
+                                                        press="onOpenSystemDialog"
+                                                        info=" {
+								                                                    path: 'oAZModel>/d/OrderedById',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        id="Azapp"
+                                                        title="App Errors"
+                                                        type="Active"
+                                                        press="onOpenAppDialog"
+                                                        info=" {
+								                                                    path: 'oAZModel>/d/SupplierId',
+							                                                    formatter: '.Formatter.formatInputValue'}"
+                                                        infoState="Error"
+                                                    />
+
+                                                    <StandardListItem
+                                                        title="No of Threads"
+                                                        info="{oAZModel>/d/ItemCount}"
+                                                        infoState="None"
+                                                    />
+                                                </List>
+
+                                                <HBox>
+                                                    <Label
+                                                        class="sapUiTinyMarginBegin"
+                                                        text="last refresh:"
+                                                    />
+                                                    <Text
+                                                        text="{
+								                                                    path: 'oAZModel>/d/DeliveryDateEarliest',
+							                                                    formatter: '.Formatter.formatJSONDate'}"
+                                                    />
+                                                </HBox>
+                                            </VBox>
+                                        </f:SimpleForm>
+                                    </HBox>
+                                </VBox>
                             </IconTabFilter>
-                            <IconTabSeparator icon="sap-icon://process"/>
+                            <IconTabSeparator icon="sap-icon://grid" />
                             <!--2nd icon tab-->
                             <IconTabFilter
                                 key="info"
@@ -208,7 +825,6 @@
                                 icon="sap-icon://business-objects-experience"
                                 design="Horizontal"
                                 iconColor="Contrast"
-                                
                             >
                                 <items>
                                     <IconTabFilter text="Micro Charts">
@@ -216,19 +832,79 @@
                                             text="Micro Charts will shown hear"
                                         />
                                     </IconTabFilter>
+                                    <!-- Viz charts -->
                                     <IconTabFilter text="Viz Charts">
-                                        <Text
-                                            text="Bar Charts,Line Charts..etc"
-                                        />
+                                        <!-- in  ChartContainer showFullScreen and showZoom are the IMP-->
+                                        <chart:ChartContainer
+                                            id="chartContainer"
+                                            showFullScreen="true"
+                                            autoAdjustHeight="true"
+                                            showZoom="true"
+                                            showPersonalization="false"
+                                            personalizationPress="attachPersonalizationPress"
+                                            contentChange="attachContentChange"
+                                            title="Bar Chart"
+                                        >
+                                            <chart:content>
+                                                <chart:ChartContainerContent>
+                                                    <chart:content>
+                                                        <viz:VizFrame
+                                                            id="idVizFrameBar"
+                                                            legendVisible="true"
+                                                            uiConfig="{applicationSet:'fiori'}"
+                                                            width="2400px"
+                                                            height="600px"
+                                                            vizProperties="{ title: {text : 'Bar Chart', visible : false}}"
+                                                            vizType='bar'
+                                                        >
+                                                            <viz:dataset>
+                                                                <viz.data:FlattenedDataset
+                                                                    id="flattenData"
+                                                                    data="{path:'/PurchaseOrders'}"
+                                                                >
+                                                                    <viz.data:dimensions
+                                                                    >
+                                                                        <viz.data:DimensionDefinition
+                                                                            name="POId"
+                                                                            value="{path:'POId'}"
+                                                                        />
+                                                                    </viz.data:dimensions>
+                                                                    <viz.data:measures
+                                                                    >
+                                                                        <viz.data:MeasureDefinition
+                                                                            name="GrossAmount"
+                                                                            value="{path:'GrossAmount'}"
+                                                                        />
+                                                                    </viz.data:measures>
+                                                                </viz.data:FlattenedDataset>
+                                                            </viz:dataset>
+
+                                                            <viz:feeds>
+                                                                <viz.feeds:FeedItem
+                                                                    uid="valueAxis"
+                                                                    type="Measure"
+                                                                    values="GrossAmount"
+                                                                />
+                                                                <viz.feeds:FeedItem
+                                                                    uid="categoryAxis"
+                                                                    type="Dimension"
+                                                                    values="POId"
+                                                                />
+                                                            </viz:feeds>
+                                                        </viz:VizFrame>
+                                                    </chart:content>
+                                                </chart:ChartContainerContent>
+                                            </chart:content>
+                                        </chart:ChartContainer>
                                     </IconTabFilter>
                                     <IconTabFilter text="Pie Charts">
                                         <Text text="Pie,Donut charts..." />
                                     </IconTabFilter>
                                 </items>
                             </IconTabFilter>
-                            <IconTabSeparator icon="sap-icon://process"/>
-                                <!--Tab 3-->
-                             <IconTabFilter
+                            <IconTabSeparator icon="sap-icon://process" />
+                            <!--Tab 3-->
+                            <IconTabFilter
                                 key="info"
                                 text="Tabular Reports"
                                 icon="sap-icon://chart-table-view"
@@ -236,22 +912,20 @@
                                 iconColor="Marker"
                             >
                                 <items>
-                                    <IconTabFilter text="Responsive Table -M">
-                                        <Text
-                                            text="Table -M will shown hear"
-                                        />
-                                    </IconTabFilter>
+                                    <IconTabFilter text="Responsive Table -M" />
                                     <IconTabFilter text="Grid Table UI-Table">
                                         <Text
                                             text="Grid - Excel like table control options"
                                         />
                                     </IconTabFilter>
                                     <IconTabFilter text="Tree Table - UI Table">
-                                        <Text text=" Tree table control options" />
+                                        <Text
+                                            text=" Tree table control options"
+                                        />
                                     </IconTabFilter>
                                 </items>
                             </IconTabFilter>
-                            <IconTabSeparator icon="sap-icon://vertical-grip"></IconTabSeparator>
+                            <IconTabSeparator icon="sap-icon://grid" />
                         </items>
                     </IconTabBar>
                 </HBox>
@@ -260,6 +934,82 @@
                     <Text text="section3" />
                 </HBox>
             </VBox>
+            <VBox>
+                <Table
+                    id="IDOrderTable"
+                    alternateRowColors="true"
+                    inset="false"
+                    items="{
+			        path: '/PurchaseOrders',
+			        sorter: { path: 'POId', descending: true}
+		}"
+                >
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <content>
+                                <Title
+                                    text="Orders"
+                                    level="H2"
+                                />
+                                <ToolbarSpacer />
+                                <Button
+                                    text="Create"
+                                    press="onCreate"
+                                />
+                                <Button
+                                    text="Update"
+                                    press="onUpdate"
+                                />
+                                <Button
+                                    text="Delete"
+                                    press="onDelete"
+                                />
+                            </content>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column width="12em">
+                            <Text text="Purchase OrderID" />
+                        </Column>
+                        <Column width="auto">
+                            <Text text="{i18n>TblOrderedById}" />
+                        </Column>
+                        <Column width="auto">
+                            <Text text="{i18n>TblChangedAt}" />
+                        </Column>
+                        <Column width="auto">
+                            <Text text="{i18n>TblLaterDelivDateExist}" />
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem vAlign="Middle">
+                            <cells>
+                                <ObjectIdentifier
+                                    title="{POId}"
+                                    text=""
+                                />
+                                <Text text="{OrderedById}" />
+                                <Text
+                                    text="{   path:'ChangedAt',
+                                                        formatter:'.Formatter.formatJSONDateTime'}"
+                                />
+                                <Text text="{LaterDelivDateExist}" />
+                                <ObjectStatus
+                                    class="sapUiSmallMarginBottom"
+                                    text="{path: 'LaterDelivDateExist',
+            formatter:'.Formatter.DeliveryStatus'}"
+                                    inverted="true"
+                                    icon="sap-icon://shipping-status"
+                                    state="{path: 'LaterDelivDateExist',
+            formatter:'.Formatter.DeliveryStatusState'}"
+                                />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+
+            <!-- Ticketing tool  -->
         </content>
     </Page>
 </mvc:View>
