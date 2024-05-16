@@ -1,3 +1,4 @@
+
 sap.ui.define(function () {
     "use strict";
 
@@ -71,6 +72,57 @@ sap.ui.define(function () {
             }
         },
 
+        formatJSONDateTime: function (Input) {
+            if (Input) {
+
+                var dateString = Input.split('T')[0];
+
+                var currentTime = Input.split('T')[1];
+
+                var currentDate = new Date(dateString);
+                var month = currentDate.getMonth() + 1;
+                var day = currentDate.getDate();
+                var year = currentDate.getFullYear();
+                //	var hour = currentDate.getHours();
+                //	var minutes = currentDate.getMinutes();
+                //	var seconds = currentDate.getSeconds();
+                //	var date = day + "-" + month + "-" + year +"  "+ hour +":" + minutes +":"+ seconds;	
+                //	var date = "" + hour +":" + minutes +":"+ seconds;
+                //	var date = " " + hour +" hr " + minutes +" min" + " Ago";
+
+                var date = day + "-" + month + "-" + year + "";
+                return date;
+            }
+            else {
+                return Input;
+            }
+        },
+
+        DeliveryStatus: function (oValue) {
+            var oString = oValue; // X
+
+
+            if (oString) {
+                return "Yes"
+            }
+            else {
+                return "No"
+            }
+
+        },
+
+        DeliveryStatusState: function (oValue) {
+            var oString = oValue; // X
+
+
+            if (oString) {
+                return "Success"
+            }
+            else {
+                return "Error"
+            }
+
+        },
         SystemStatus: function (oValue, oThreshold) {
             var Value = parseInt(oValue);
             var Threshold = parseInt(oThreshold);
@@ -83,33 +135,6 @@ sap.ui.define(function () {
             }
             else {
                 return "None"
-            }
-
-        },
-
-
-
-        DeliveryStatus: function (oValue) {
-            var oString =oValue;
-
-            if (oString) {
-                return "Yes"
-            }
-            else {
-                return "No"
-            }
-
-        },
-
-
-        DeliveryStatusState: function (oValue) {
-            var oString =oValue;
-
-            if (oString) {
-                return "Success"
-            }
-            else {
-                return "Error"
             }
 
         },
@@ -168,5 +193,3 @@ sap.ui.define(function () {
     return Formatter;
 
 }, /* bExport= */ true);
-
-

@@ -852,8 +852,8 @@
                                                             id="idVizFrameBar"
                                                             legendVisible="true"
                                                             uiConfig="{applicationSet:'fiori'}"
-                                                            width="2400px"
-                                                            height="600px"
+                                                            width="500em"
+                                                            height="40em"
                                                             vizProperties="{ title: {text : 'Bar Chart', visible : false}}"
                                                             vizType='bar'
                                                         >
@@ -865,8 +865,8 @@
                                                                     <viz.data:dimensions
                                                                     >
                                                                         <viz.data:DimensionDefinition
-                                                                            name="POId"
-                                                                            value="{path:'POId'}"
+                                                                            name="OrderedByName"
+                                                                            value="{path:'OrderedByName'}"
                                                                         />
                                                                     </viz.data:dimensions>
                                                                     <viz.data:measures
@@ -888,7 +888,7 @@
                                                                 <viz.feeds:FeedItem
                                                                     uid="categoryAxis"
                                                                     type="Dimension"
-                                                                    values="POId"
+                                                                    values="OrderedByName"
                                                                 />
                                                             </viz:feeds>
                                                         </viz:VizFrame>
@@ -899,6 +899,69 @@
                                     </IconTabFilter>
                                     <IconTabFilter text="Pie Charts">
                                         <Text text="Pie,Donut charts..." />
+                                        <chart:ChartContainer
+                                            id="chartContainerPie"
+                                            showFullScreen="true"
+                                            autoAdjustHeight="true"
+                                            showZoom="true"
+                                            showPersonalization="false"
+                                            personalizationPress="attachPersonalizationPress"
+                                            contentChange="attachContentChange"
+                                            title="Bar Chart"
+                                        >
+                                            <chart:content>
+                                                <chart:ChartContainerContent>
+                                                    <chart:content>
+                                                        <viz:VizFrame
+                                                            id="idVizFramePie"
+                                                            uiConfig="{applicationSet:'fiori'}"
+                                                            width="500em"
+                                                            height="40em"
+                                                            vizType='pie'
+                                                        >
+                                                            <viz:dataset>
+                                                                <viz.data:FlattenedDataset
+                                                                    data="{path:'/PurchaseOrders'}"
+                                                                >
+                                                                    <viz.data:dimensions
+                                                                    >
+                                                                        <viz.data:DimensionDefinition
+                                                                            name="OrderedByName"
+                                                                            value="{path:'OrderedByName'}"
+                                                                        />
+                                                                    </viz.data:dimensions>
+                                                                    <viz.data:measures
+                                                                    >
+                                                                        <viz.data:MeasureDefinition
+                                                                            name="GrossAmount"
+                                                                            value="{path:'GrossAmount'}"
+                                                                        />
+                                                                    </viz.data:measures>
+                                                                </viz.data:FlattenedDataset>
+                                                            </viz:dataset>
+
+                                                            <viz:feeds>
+                                                                <viz.feeds:FeedItem
+                                                                    uid="size"
+                                                                    type="Measure"
+                                                                    values="GrossAmount"
+                                                                />
+                                                                <viz.feeds:FeedItem
+                                                                    uid="color"
+                                                                    type="Dimension"
+                                                                    values="OrderedByName"
+                                                                />
+                                                            </viz:feeds>
+                                                            <viz:dependents>
+                                                                <viz:Popover
+                                                                    id="idPopOver"
+                                                                />
+                                                            </viz:dependents>
+                                                        </viz:VizFrame>
+                                                    </chart:content>
+                                                </chart:ChartContainerContent>
+                                            </chart:content>
+                                        </chart:ChartContainer>
                                     </IconTabFilter>
                                 </items>
                             </IconTabFilter>
@@ -997,11 +1060,11 @@
                                 <ObjectStatus
                                     class="sapUiSmallMarginBottom"
                                     text="{path: 'LaterDelivDateExist',
-            formatter:'.Formatter.DeliveryStatus'}"
+                                             formatter:'.Formatter.DeliveryStatus'}"
                                     inverted="true"
                                     icon="sap-icon://shipping-status"
                                     state="{path: 'LaterDelivDateExist',
-            formatter:'.Formatter.DeliveryStatusState'}"
+                                            formatter:'.Formatter.DeliveryStatusState'}"
                                 />
                             </cells>
                         </ColumnListItem>
