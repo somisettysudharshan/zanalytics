@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog
+		confirm="handleFilterDialogConfirm">
+		<filterItems>
+			<ViewSettingsFilterItem
+				text="Supplier Order Id"
+				key="POId"
+				multiSelect="false">
+				<items>
+					<ViewSettingsItem text="Less than 300001980" key="POId___LE___300001980___X" />
+					<ViewSettingsItem text="Between 300001980 and 300001990" key="POId___BT___300001980___300001990" />
+					<ViewSettingsItem text="More Than 300001990" key="POId___GT___300001990___X" />
+				</items>
+			</ViewSettingsFilterItem>
+		</filterItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>

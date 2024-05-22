@@ -32,6 +32,7 @@ server:
         backend:
           - path: /sap
             url: https://sapes5.sapdevcenter.com
+            destination: ES5
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:

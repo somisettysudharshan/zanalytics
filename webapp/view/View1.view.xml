@@ -11,6 +11,7 @@
     xmlns:viz="sap.viz.ui5.controls"
     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
     xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:l="sap.ui.layout"
 >
     <Page
         id="page"
@@ -248,7 +249,7 @@
                                                         id="IDsys"
                                                         title="System Errors"
                                                         type="Active"
-                                                        press="onOpenSystemDialog"
+                                                        press="onOpensysErrorDialog"
                                                         info="{
 								                                                    path: 'oSAPModel>/d/OrderedById',
 							                                                    formatter: '.Formatter.formatInputValue'}"
@@ -259,7 +260,7 @@
                                                         id="IDapp"
                                                         title="App Errors"
                                                         type="Active"
-                                                        press="onOpenAppDialog"
+                                                        press="onOpensysErrorDialog"
                                                         info=" {
 								                                                    path: 'oSAPModel>/d/SupplierId',
 							                                                    formatter: '.Formatter.formatInputValue'}"
@@ -322,7 +323,7 @@
                                                         id="Consys"
                                                         title="System Errors"
                                                         type="Active"
-                                                        press="onOpenSystemDialog"
+                                                        press="onOpensysErrorDialog"
                                                         info="{
 								                                                    path: 'oConModel>/d/OrderedById',
 							                                                    formatter: '.Formatter.formatInputValue'}"
@@ -397,7 +398,7 @@
                                                         id="Aribasys"
                                                         title="System Errors"
                                                         type="Active"
-                                                        press="onOpenSystemDialog"
+                                                        press="onOpenTableDialog"
                                                         info="{
 								                                                    path: 'oAriModel>/d/OrderedById',
 							                                                    formatter: '.Formatter.formatInputValue'}"
@@ -827,12 +828,71 @@
                                 iconColor="Contrast"
                             >
                                 <items>
-                                    <IconTabFilter text="Micro Charts">
-                                        <Text
-                                            text="Micro Charts will shown hear"
-                                        />
+                                    <IconTabFilter text="DoNut">
+                                        <!-- Viz charts -->
+                                        <chart:ChartContainer
+                                            id="chartContainers"
+                                            showFullScreen="true"
+                                            autoAdjustHeight="true"
+                                            showZoom="true"
+                                            showPersonalization="false"
+                                            personalizationPress="attachPersonalizationPress"
+                                            contentChange="attachContentChange"
+                                            title="Sales Data"
+                                        >
+                                            <chart:content>
+                                                <chart:ChartContainerContent>
+                                                    <chart:content>
+                                                        <viz:VizFrame
+                                                            id="idVizFrameBars"
+                                                            legendVisible="true"
+                                                            uiConfig="{applicationSet:'fiori'}"
+                                                            width="500em"
+                                                            height="40em"
+                                                            vizProperties="{ title: {text : 'Donut', visible : false}}"
+                                                            vizType='donut'
+                                                        >
+                                                            <viz:dataset>
+                                                                <viz.data:FlattenedDataset
+                                                                    id="flattenDatas"
+                                                                    data="{path:'/PurchaseOrders'}"
+                                                                >
+                                                                    <viz.data:dimensions
+                                                                    >
+                                                                        <viz.data:DimensionDefinition
+                                                                            name="SupplierName"
+                                                                            value="{path:'SupplierName'}"
+                                                                        />
+                                                                    </viz.data:dimensions>
+                                                                    <viz.data:measures
+                                                                    >
+                                                                        <viz.data:MeasureDefinition
+                                                                            name="GrossAmount"
+                                                                            value="{path:'GrossAmount'}"
+                                                                        />
+                                                                    </viz.data:measures>
+                                                                </viz.data:FlattenedDataset>
+                                                            </viz:dataset>
+
+                                                            <viz:feeds>
+                                                                <viz.feeds:FeedItem
+                                                                    uid="size"
+                                                                    type="Measure"
+                                                                    values="GrossAmount"
+                                                                />
+                                                                <viz.feeds:FeedItem
+                                                                    uid="color"
+                                                                    type="Dimension"
+                                                                    values="SupplierName"
+                                                                />
+                                                            </viz:feeds>
+                                                        </viz:VizFrame>
+                                                    </chart:content>
+                                                </chart:ChartContainerContent>
+                                            </chart:content>
+                                        </chart:ChartContainer>
                                     </IconTabFilter>
-                                    <!-- Viz charts -->
+
                                     <IconTabFilter text="Viz Charts">
                                         <!-- in  ChartContainer showFullScreen and showZoom are the IMP-->
                                         <chart:ChartContainer
@@ -865,8 +925,8 @@
                                                                     <viz.data:dimensions
                                                                     >
                                                                         <viz.data:DimensionDefinition
-                                                                            name="OrderedByName"
-                                                                            value="{path:'OrderedByName'}"
+                                                                            name="SupplierName"
+                                                                            value="{path:'SupplierName'}"
                                                                         />
                                                                     </viz.data:dimensions>
                                                                     <viz.data:measures
@@ -888,7 +948,7 @@
                                                                 <viz.feeds:FeedItem
                                                                     uid="categoryAxis"
                                                                     type="Dimension"
-                                                                    values="OrderedByName"
+                                                                    values="SupplierName"
                                                                 />
                                                             </viz:feeds>
                                                         </viz:VizFrame>
@@ -907,7 +967,7 @@
                                             showPersonalization="false"
                                             personalizationPress="attachPersonalizationPress"
                                             contentChange="attachContentChange"
-                                            title="Bar Chart"
+                                            title="Pie Chart"
                                         >
                                             <chart:content>
                                                 <chart:ChartContainerContent>
@@ -926,8 +986,8 @@
                                                                     <viz.data:dimensions
                                                                     >
                                                                         <viz.data:DimensionDefinition
-                                                                            name="OrderedByName"
-                                                                            value="{path:'OrderedByName'}"
+                                                                            name="SupplierName"
+                                                                            value="{path:'SupplierName'}"
                                                                         />
                                                                     </viz.data:dimensions>
                                                                     <viz.data:measures
@@ -949,14 +1009,9 @@
                                                                 <viz.feeds:FeedItem
                                                                     uid="color"
                                                                     type="Dimension"
-                                                                    values="OrderedByName"
+                                                                    values="SupplierName"
                                                                 />
                                                             </viz:feeds>
-                                                            <viz:dependents>
-                                                                <viz:Popover
-                                                                    id="idPopOver"
-                                                                />
-                                                            </viz:dependents>
                                                         </viz:VizFrame>
                                                     </chart:content>
                                                 </chart:ChartContainerContent>
@@ -975,7 +1030,113 @@
                                 iconColor="Marker"
                             >
                                 <items>
-                                    <IconTabFilter text="Responsive Table -M" />
+                                    <IconTabFilter text="Responsive Table -M">
+                                        <Table
+                                            id="IDOrderTable"
+                                            alternateRowColors="true"
+                                            inset="false"
+                                            items="{
+			        path: '/PurchaseOrders',
+			        sorter: { path: 'POId', descending: true}
+		}"
+                                        >
+                                            <headerToolbar>
+                                                <OverflowToolbar>
+                                                    <content>
+                                                        <Title
+                                                            text="Orders"
+                                                            level="H2"
+                                                        />
+                                                        <ToolbarSpacer />
+                                                        <Button
+                                                            text="Create"
+                                                            press="onOpenDialog"
+                                                        />
+                                                        <Button
+                                                            text="Update"
+                                                            press="onUpdate"
+                                                        />
+                                                        <Button
+                                                            text="Delete"
+                                                            press="onDelete"
+                                                        />
+                                                        <ToolbarSpacer />
+                                                        <Button
+                                                            tooltip="Sort"
+                                                            icon="sap-icon://sort"
+                                                            press="handleSortButtonPressed"
+                                                        />
+                                                        <Button
+                                                            tooltip="Filter"
+                                                            icon="sap-icon://filter"
+                                                            press="handleFilterButtonPressed"
+                                                        />
+                                                        <Button
+                                                            tooltip="Group"
+                                                            icon="sap-icon://group-2"
+                                                            press="handleGroupButtonPressed"
+                                                        />
+                                                    </content>
+                                                </OverflowToolbar>
+                                            </headerToolbar>
+                                            <columns>
+                                                <Column width="12em">
+                                                    <Text
+                                                        text="Purchase OrderID"
+                                                    />
+                                                </Column>
+                                                <Column width="auto">
+                                                    <Text
+                                                        text="{i18n>TblOrderedById}"
+                                                    />
+                                                </Column>
+                                                <Column width="auto">
+                                                    <Text
+                                                        text="{i18n>TblChangedAt}"
+                                                    />
+                                                </Column>
+                                                <Column width="auto">
+                                                    <Text
+                                                        text="{i18n>TblLaterDelivDateExist}"
+                                                    />
+                                                </Column>
+                                                <Column width="auto">
+                                                    <Text
+                                                        text="{Status}"
+                                                    />
+                                                    
+                                                </Column>
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem vAlign="Middle">
+                                                    <cells>
+                                                        <ObjectIdentifier
+                                                            title="{POId}"
+                                                            text=""
+                                                        />
+                                                        <Text
+                                                            text="{POId}"
+                                                        />
+                                                        <Text
+                                                            text="{   path:'ChangedAt',
+                                                        formatter:'.Formatter.formatJSONDateTime'}"
+                                                        />
+                                                        
+                                                        <ObjectStatus
+                                                            class="sapUiSmallMarginBottom"
+                                                            text="{path: 'LaterDelivDateExist',
+                                             formatter:'.Formatter.DeliveryStatus'}"
+                                                            inverted="true"
+                                                            icon="sap-icon://shipping-status"
+                                                            state="{path: 'LaterDelivDateExist',
+                                            formatter:'.Formatter.DeliveryStatusState'}"
+                                                        />
+                                                        
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                    </IconTabFilter>
                                     <IconTabFilter text="Grid Table UI-Table">
                                         <Text
                                             text="Grid - Excel like table control options"
@@ -997,82 +1158,292 @@
                     <Text text="section3" />
                 </HBox>
             </VBox>
-            <VBox>
-                <Table
-                    id="IDOrderTable"
-                    alternateRowColors="true"
-                    inset="false"
-                    items="{
-			        path: '/PurchaseOrders',
-			        sorter: { path: 'POId', descending: true}
-		}"
-                >
-                    <headerToolbar>
-                        <OverflowToolbar>
-                            <content>
-                                <Title
-                                    text="Orders"
-                                    level="H2"
-                                />
-                                <ToolbarSpacer />
-                                <Button
-                                    text="Create"
-                                    press="onCreate"
-                                />
-                                <Button
-                                    text="Update"
-                                    press="onUpdate"
-                                />
-                                <Button
-                                    text="Delete"
-                                    press="onDelete"
-                                />
-                            </content>
-                        </OverflowToolbar>
-                    </headerToolbar>
-                    <columns>
-                        <Column width="12em">
-                            <Text text="Purchase OrderID" />
-                        </Column>
-                        <Column width="auto">
-                            <Text text="{i18n>TblOrderedById}" />
-                        </Column>
-                        <Column width="auto">
-                            <Text text="{i18n>TblChangedAt}" />
-                        </Column>
-                        <Column width="auto">
-                            <Text text="{i18n>TblLaterDelivDateExist}" />
-                        </Column>
-                    </columns>
-                    <items>
-                        <ColumnListItem vAlign="Middle">
-                            <cells>
-                                <ObjectIdentifier
-                                    title="{POId}"
-                                    text=""
-                                />
-                                <Text text="{OrderedById}" />
-                                <Text
-                                    text="{   path:'ChangedAt',
-                                                        formatter:'.Formatter.formatJSONDateTime'}"
-                                />
-                                <Text text="{LaterDelivDateExist}" />
-                                <ObjectStatus
-                                    class="sapUiSmallMarginBottom"
-                                    text="{path: 'LaterDelivDateExist',
-                                             formatter:'.Formatter.DeliveryStatus'}"
-                                    inverted="true"
-                                    icon="sap-icon://shipping-status"
-                                    state="{path: 'LaterDelivDateExist',
-                                            formatter:'.Formatter.DeliveryStatusState'}"
-                                />
-                            </cells>
-                        </ColumnListItem>
-                    </items>
-                </Table>
-            </VBox>
+            <VBox />
 
             <!-- Ticketing tool  -->
+        </content>
+        <content>
+            <l:BlockLayout>
+                <l:content>
+                    <l:BlockLayoutRow>
+                        <l:content>
+                            <l:BlockLayoutCell
+                                id="cell1"
+                                width="1"
+                            >
+                                <l:content>
+                                    <chart:ChartContainer
+                                        id="chartContainers1"
+                                        showFullScreen="true"
+                                        autoAdjustHeight="true"
+                                        showZoom="true"
+                                        showPersonalization="false"
+                                        personalizationPress="attachPersonalizationPress"
+                                        contentChange="attachContentChange"
+                                        title="Sales Data"
+                                    >
+                                        <chart:content>
+                                            <chart:ChartContainerContent>
+                                                <chart:content>
+                                                    <viz:VizFrame
+                                                        id="idVizFrameBars1"
+                                                        legendVisible="true"
+                                                        uiConfig="{applicationSet:'fiori'}"
+                                                        width="500em"
+                                                        height="30em"
+                                                        vizProperties="{ title: {text : 'Donut', visible : false}}"
+                                                        vizType='donut'
+                                                    >
+                                                        <viz:dataset>
+                                                            <viz.data:FlattenedDataset
+                                                                id="flattenData1"
+                                                                data="{path:'/PurchaseOrders'}"
+                                                            >
+                                                                <viz.data:dimensions
+                                                                >
+                                                                    <viz.data:DimensionDefinition
+                                                                        name="SupplierName"
+                                                                        value="{path:'SupplierName'}"
+                                                                    />
+                                                                </viz.data:dimensions>
+                                                                <viz.data:measures
+                                                                >
+                                                                    <viz.data:MeasureDefinition
+                                                                        name="GrossAmount"
+                                                                        value="{path:'GrossAmount'}"
+                                                                    />
+                                                                </viz.data:measures>
+                                                            </viz.data:FlattenedDataset>
+                                                        </viz:dataset>
+
+                                                        <viz:feeds>
+                                                            <viz.feeds:FeedItem
+                                                                uid="size"
+                                                                type="Measure"
+                                                                values="GrossAmount"
+                                                            />
+                                                            <viz.feeds:FeedItem
+                                                                uid="color"
+                                                                type="Dimension"
+                                                                values="SupplierName"
+                                                            />
+                                                        </viz:feeds>
+                                                    </viz:VizFrame>
+                                                </chart:content>
+                                            </chart:ChartContainerContent>
+                                        </chart:content>
+                                    </chart:ChartContainer>
+                                </l:content>
+                            </l:BlockLayoutCell>
+                            <l:BlockLayoutCell
+                                id="cell2"
+                                width="1"
+                            >
+                                <l:content>
+                                    <chart:ChartContainer
+                                        id="chartContainer2"
+                                        showFullScreen="true"
+                                        autoAdjustHeight="true"
+                                        showZoom="true"
+                                        showPersonalization="false"
+                                        personalizationPress="attachPersonalizationPress"
+                                        contentChange="attachContentChange"
+                                        title="Bar Chart"
+                                    >
+                                        <chart:content>
+                                            <chart:ChartContainerContent>
+                                                <chart:content>
+                                                    <viz:VizFrame
+                                                        id="idVizFrameBar2"
+                                                        legendVisible="true"
+                                                        uiConfig="{applicationSet:'fiori'}"
+                                                        width="500em"
+                                                        height="40em"
+                                                        vizProperties="{ title: {text : 'Bar Chart', visible : false}}"
+                                                        vizType='bar'
+                                                    >
+                                                        <viz:dataset>
+                                                            <viz.data:FlattenedDataset
+                                                                id="flattenData2"
+                                                                data="{path:'/PurchaseOrders'}"
+                                                            >
+                                                                <viz.data:dimensions
+                                                                >
+                                                                    <viz.data:DimensionDefinition
+                                                                        name="SupplierName"
+                                                                        value="{path:'SupplierName'}"
+                                                                    />
+                                                                </viz.data:dimensions>
+                                                                <viz.data:measures
+                                                                >
+                                                                    <viz.data:MeasureDefinition
+                                                                        name="GrossAmount"
+                                                                        value="{path:'GrossAmount'}"
+                                                                    />
+                                                                </viz.data:measures>
+                                                            </viz.data:FlattenedDataset>
+                                                        </viz:dataset>
+
+                                                        <viz:feeds>
+                                                            <viz.feeds:FeedItem
+                                                                uid="valueAxis"
+                                                                type="Measure"
+                                                                values="GrossAmount"
+                                                            />
+                                                            <viz.feeds:FeedItem
+                                                                uid="categoryAxis"
+                                                                type="Dimension"
+                                                                values="SupplierName"
+                                                            />
+                                                        </viz:feeds>
+                                                    </viz:VizFrame>
+                                                </chart:content>
+                                            </chart:ChartContainerContent>
+                                        </chart:content>
+                                    </chart:ChartContainer>
+                                </l:content>
+                            </l:BlockLayoutCell>
+                        </l:content>
+                    </l:BlockLayoutRow>
+                    <l:BlockLayoutRow>
+                        <l:content>
+                            <l:BlockLayoutCell
+                                id="cell3"
+                                width="1"
+                            >
+                                <l:content>
+                                    <chart:ChartContainer
+                                        id="chartContainer3"
+                                        showFullScreen="true"
+                                        autoAdjustHeight="true"
+                                        showZoom="true"
+                                        showPersonalization="false"
+                                        personalizationPress="attachPersonalizationPress"
+                                        contentChange="attachContentChange"
+                                        title="Bar Chart"
+                                    >
+                                        <chart:content>
+                                            <chart:ChartContainerContent>
+                                                <chart:content>
+                                                    <viz:VizFrame
+                                                        id="idVizFrameBar3"
+                                                        legendVisible="true"
+                                                        uiConfig="{applicationSet:'fiori'}"
+                                                        width="500em"
+                                                        height="40em"
+                                                        vizProperties="{ title: {text : 'Bar Chart', visible : false}}"
+                                                        vizType='column'
+                                                    >
+                                                        <viz:dataset>
+                                                            <viz.data:FlattenedDataset
+                                                                id="flattenData3"
+                                                                data="{path:'/PurchaseOrders'}"
+                                                            >
+                                                                <viz.data:dimensions
+                                                                >
+                                                                    <viz.data:DimensionDefinition
+                                                                        name="SupplierName"
+                                                                        value="{path:'SupplierName'}"
+                                                                    />
+                                                                </viz.data:dimensions>
+                                                                <viz.data:measures
+                                                                >
+                                                                    <viz.data:MeasureDefinition
+                                                                        name="GrossAmount"
+                                                                        value="{path:'GrossAmount'}"
+                                                                    />
+                                                                </viz.data:measures>
+                                                            </viz.data:FlattenedDataset>
+                                                        </viz:dataset>
+
+                                                        <viz:feeds>
+                                                            <viz.feeds:FeedItem
+                                                                uid="valueAxis"
+                                                                type="Measure"
+                                                                values="GrossAmount"
+                                                            />
+                                                            <viz.feeds:FeedItem
+                                                                uid="categoryAxis"
+                                                                type="Dimension"
+                                                                values="SupplierName"
+                                                            />
+                                                        </viz:feeds>
+                                                    </viz:VizFrame>
+                                                </chart:content>
+                                            </chart:ChartContainerContent>
+                                        </chart:content>
+                                    </chart:ChartContainer>
+                                </l:content>
+                            </l:BlockLayoutCell>
+                            <l:BlockLayoutCell
+                                id="cell4"
+                                width="1"
+                            >
+                                <l:content>
+                                    <chart:ChartContainer
+                                        id="chartContainerPie4"
+                                        showFullScreen="true"
+                                        autoAdjustHeight="true"
+                                        showZoom="true"
+                                        showPersonalization="false"
+                                        personalizationPress="attachPersonalizationPress"
+                                        contentChange="attachContentChange"
+                                        title="Pie Chart"
+                                    >
+                                        <chart:content>
+                                            <chart:ChartContainerContent>
+                                                <chart:content>
+                                                    <viz:VizFrame
+                                                        id="idVizFramePie4"
+                                                        uiConfig="{applicationSet:'fiori'}"
+                                                        width="500em"
+                                                        height="40em"
+                                                        vizType='line'
+                                                    >
+                                                        <viz:dataset>
+                                                            <viz.data:FlattenedDataset
+                                                                data="{path:'/PurchaseOrders'}"
+                                                            >
+                                                                <viz.data:dimensions
+                                                                >
+                                                                    <viz.data:DimensionDefinition
+                                                                        name="SupplierName"
+                                                                        value="{path:'SupplierName'}"
+                                                                    />
+                                                                </viz.data:dimensions>
+                                                                <viz.data:measures
+                                                                >
+                                                                    <viz.data:MeasureDefinition
+                                                                        name="GrossAmount"
+                                                                        value="{path:'GrossAmount'}"
+                                                                    />
+                                                                </viz.data:measures>
+                                                            </viz.data:FlattenedDataset>
+                                                        </viz:dataset>
+
+                                                        <viz:feeds>
+                                                            <viz.feeds:FeedItem
+                                                                uid="valueAxis"
+                                                                type="Measure"
+                                                                values="GrossAmount"
+                                                            />
+                                                            <viz.feeds:FeedItem
+                                                                uid="categoryAxis"
+                                                                type="Dimension"
+                                                                values="SupplierName"
+                                                            />
+                                                        </viz:feeds>
+                                                    </viz:VizFrame>
+                                                </chart:content>
+                                            </chart:ChartContainerContent>
+                                        </chart:content>
+                                    </chart:ChartContainer>
+                                </l:content>
+                            </l:BlockLayoutCell>
+                        </l:content>
+                    </l:BlockLayoutRow>
+                </l:content>
+            </l:BlockLayout>
         </content>
     </Page>
 </mvc:View>

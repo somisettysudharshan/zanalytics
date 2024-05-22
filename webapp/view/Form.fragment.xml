@@ -1,0 +1,89 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Dialog
+        id="TableDialog"
+        class="sapUiSizeCozy"
+        resizable="true"
+        draggable="true"
+        title="System Error Report"
+        contentHeight="400px"
+        contentWidth="230px"
+    >
+        <Table
+            id="IDOrderTable"
+            alternateRowColors="true"
+            inset="false"
+            items="{
+			        path: '/PurchaseOrders',
+			        sorter: { path: 'POId', descending: true}
+		}"
+        >
+            <headerToolbar>
+                <OverflowToolbar>
+                    <content>
+                        <Title
+                            text="Orders"
+                            level="H2"
+                        />
+                        <ToolbarSpacer />
+                        <Button
+                            text="Create"
+                            press="onOpenDialog"
+                        />
+                        <Button
+                            text="Update"
+                            press="onUpdate"
+                        />
+                        <Button
+                            text="Delete"
+                            press="onDelete"
+                        />
+                    </content>
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column width="12em">
+                    <Text text="Purchase OrderID" />
+                </Column>
+                <Column width="auto">
+                    <Text text="{i18n>TblOrderedById}" />
+                </Column>
+                <Column width="auto">
+                    <Text text="{i18n>TblChangedAt}" />
+                </Column>
+                <Column width="auto">
+                    <Text text="{i18n>TblLaterDelivDateExist}" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem vAlign="Middle">
+                    <cells>
+                        <ObjectIdentifier
+                            title="{POId}"
+                            text=""
+                        />
+                        <Text text="{OrderedById}" />
+                        <Text
+                            text="{   path:'ChangedAt',
+                                                        formatter:'.Formatter.formatJSONDateTime'}"
+                        />
+                        <Text text="{LaterDelivDateExist}" />
+                        <ObjectStatus
+                            class="sapUiSmallMarginBottom"
+                            text="{path: 'LaterDelivDateExist',
+                                             formatter:'.Formatter.DeliveryStatus'}"
+                            inverted="true"
+                            icon="sap-icon://shipping-status"
+                            state="{path: 'LaterDelivDateExist',
+                                            formatter:'.Formatter.DeliveryStatusState'}"
+                        />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Dialog>
+</core:FragmentDefinition>
