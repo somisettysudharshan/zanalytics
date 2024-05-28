@@ -847,9 +847,16 @@
                                                             id="idVizFrameBars"
                                                             legendVisible="true"
                                                             uiConfig="{applicationSet:'fiori'}"
-                                                            width="500em"
-                                                            height="40em"
-                                                            vizProperties="{ title: {text : 'Donut', visible : false}}"
+                                                            width="900em"
+                                                            height="30em"
+                                                            vizProperties="{plotArea: {dataLabel: {visible: true}},
+                                                                                        legend: {
+					title: {
+						visible: true
+					}
+				}
+				
+			}"
                                                             vizType='donut'
                                                         >
                                                             <viz:dataset>
@@ -914,7 +921,14 @@
                                                             uiConfig="{applicationSet:'fiori'}"
                                                             width="500em"
                                                             height="40em"
-                                                            vizProperties="{ title: {text : 'Bar Chart', visible : false}}"
+                                                            vizProperties="{plotArea: {dataLabel: {visible: true}},
+                                                                                        legend: {
+					title: {
+						visible: true
+					}
+				}
+				
+			}"
                                                             vizType='bar'
                                                         >
                                                             <viz:dataset>
@@ -972,11 +986,33 @@
                                             <chart:content>
                                                 <chart:ChartContainerContent>
                                                     <chart:content>
-                                                        <viz:VizFrame
+                                                        <!-- <viz:VizFrame
                                                             id="idVizFramePie"
                                                             uiConfig="{applicationSet:'fiori'}"
                                                             width="500em"
                                                             height="40em"
+                                                            vizType='pie'
+                                                        > -->
+                                                        <viz:VizFrame
+                                                            id="idVizFramePie"
+                                                            legendVisible="true"
+                                                            uiConfig="{applicationSet:'fiori'}"
+                                                            width="2400px"
+                                                            height="600px"
+                                                            vizProperties="{
+				plotArea: {
+					dataLabel: {
+						visible: true
+					}
+					
+				},
+				legend: {
+					title: {
+						visible: true
+					}
+				}
+				
+			}"
                                                             vizType='pie'
                                                         >
                                                             <viz:dataset>
@@ -1035,6 +1071,7 @@
                                             id="IDOrderTable"
                                             alternateRowColors="true"
                                             inset="false"
+                                            mode="SingleSelectLeft"
                                             items="{
 			        path: '/PurchaseOrders',
 			        sorter: { path: 'POId', descending: true}
@@ -1054,7 +1091,7 @@
                                                         />
                                                         <Button
                                                             text="Update"
-                                                            press="onUpdate"
+                                                            press="onUpdateDialog"
                                                         />
                                                         <Button
                                                             text="Delete"
@@ -1101,27 +1138,31 @@
                                                     />
                                                 </Column>
                                                 <Column width="auto">
-                                                    <Text
-                                                        text="{Status}"
-                                                    />
-                                                    
+                                                    <Text text="{Status}" />
                                                 </Column>
                                             </columns>
                                             <items>
                                                 <ColumnListItem vAlign="Middle">
                                                     <cells>
-                                                        <ObjectIdentifier
+                                                        <!-- <ObjectIdentifier
                                                             title="{POId}"
                                                             text=""
+                                                        /> -->
+
+                                                        <!-- <Input maxLength="10" value="{POId}"></Input> -->
+                                                        <!-- <Input maxLength="{path : '/#PurchaseOrders/POId/@maxLength',formatter: '.Formatter.toInteger'}" value="{POId}"> </Input> -->
+                                                        <Input
+                                                            maxLength="{path : '/#PurchaseOrder/POId/@maxLength' ,formatter: '.Formatter.toInteger'}"
+                                                            value="{POId}"
                                                         />
                                                         <Text
-                                                            text="{POId}"
+                                                            text="{OrderedById}"
                                                         />
                                                         <Text
                                                             text="{   path:'ChangedAt',
                                                         formatter:'.Formatter.formatJSONDateTime'}"
                                                         />
-                                                        
+
                                                         <ObjectStatus
                                                             class="sapUiSmallMarginBottom"
                                                             text="{path: 'LaterDelivDateExist',
@@ -1131,7 +1172,6 @@
                                                             state="{path: 'LaterDelivDateExist',
                                             formatter:'.Formatter.DeliveryStatusState'}"
                                                         />
-                                                        
                                                     </cells>
                                                 </ColumnListItem>
                                             </items>
@@ -1191,7 +1231,9 @@
                                                         uiConfig="{applicationSet:'fiori'}"
                                                         width="500em"
                                                         height="30em"
-                                                        vizProperties="{ title: {text : 'Donut', visible : false}}"
+                                                       vizProperties="{plotArea: {dataLabel: {visible: true}},
+                                                                          legend: {title: {visible: true}}
+                                                                          }"
                                                         vizType='donut'
                                                     >
                                                         <viz:dataset>
@@ -1259,7 +1301,8 @@
                                                         uiConfig="{applicationSet:'fiori'}"
                                                         width="500em"
                                                         height="40em"
-                                                        vizProperties="{ title: {text : 'Bar Chart', visible : false}}"
+                                                        vizProperties="{plotArea: {dataLabel: {visible: true}},
+                                                                          legend: {title: {visible: true}}}"
                                                         vizType='bar'
                                                     >
                                                         <viz:dataset>
@@ -1331,7 +1374,8 @@
                                                         uiConfig="{applicationSet:'fiori'}"
                                                         width="500em"
                                                         height="40em"
-                                                        vizProperties="{ title: {text : 'Bar Chart', visible : false}}"
+                                                        vizProperties="{plotArea: {dataLabel: {visible: true}},
+                                                                          legend: {title: {visible: true}}}"
                                                         vizType='column'
                                                     >
                                                         <viz:dataset>
@@ -1399,11 +1443,22 @@
                                                         width="500em"
                                                         height="40em"
                                                         vizType='line'
+                                                        vizProperties="{plotArea: {dataLabel: {visible: true}},
+                                                                          legend: {title: {visible: true}}
+
+                                                                          }"
                                                     >
                                                         <viz:dataset>
                                                             <viz.data:FlattenedDataset
                                                                 data="{path:'/PurchaseOrders'}"
                                                             >
+                                                            <!-- <viz.data:FlattenedDataset data="{ path: '/PurchaseOrders', 
+                                                           filters: [{
+		                                                       path: 'Data1',				            
+                                                                       operator: 'GT',								          
+                                                                       value1: 10											        	 
+                                                                    }]
+                                                         }"> -->
                                                                 <viz.data:dimensions
                                                                 >
                                                                     <viz.data:DimensionDefinition

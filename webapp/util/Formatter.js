@@ -4,6 +4,13 @@ sap.ui.define(function () {
 
     var Formatter = {
 
+
+        
+        toInteger :function(oValue){
+            var oValueInt= oValue;
+            return parseInt(oValueInt)
+        },
+
         weightState: function (fMeasure, sUnit) {
 
             // Boarder values for different status of weight
@@ -62,9 +69,9 @@ sap.ui.define(function () {
                 var hour = currentTime.getHours();
                 var minutes = currentTime.getMinutes();
                 var seconds = currentTime.getSeconds();
-                //	var date = day + "-" + month + "-" + year +"  "+ hour +":" + minutes +":"+ seconds;	
+                	var date = day + "-" + month + "-" + year +"  "+ hour +":" + minutes +":"+ seconds;	
                 //	var date = "" + hour +":" + minutes +":"+ seconds;
-                var date = " " + hour + " hr " + minutes + " min" + " Ago";
+                  //var date = " " + hour + " hr " + minutes + " min" + " Ago";
                 return date;
             }
             else {
@@ -83,14 +90,14 @@ sap.ui.define(function () {
                 var month = currentDate.getMonth() + 1;
                 var day = currentDate.getDate();
                 var year = currentDate.getFullYear();
-                //	var hour = currentDate.getHours();
-                //	var minutes = currentDate.getMinutes();
-                //	var seconds = currentDate.getSeconds();
+                	var hour = currentDate.getHours();
+                	var minutes = currentDate.getMinutes();
+                	var seconds = currentDate.getSeconds();
                 //	var date = day + "-" + month + "-" + year +"  "+ hour +":" + minutes +":"+ seconds;	
                 //	var date = "" + hour +":" + minutes +":"+ seconds;
                 //	var date = " " + hour +" hr " + minutes +" min" + " Ago";
 
-                var date = day + "-" + month + "-" + year + "";
+                  var date = day + "-" + month + "-" + year + "";
                 return date;
             }
             else {
