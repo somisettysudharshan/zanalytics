@@ -1195,7 +1195,7 @@
                 </HBox>
 
                 <HBox>
-                    <Text text="section3" />
+                    <Text text="VizFrames"/>
                 </HBox>
             </VBox>
             <VBox />
